@@ -44,6 +44,7 @@ docker run -itd --rm  --name miner \
 
 
 command-line example for chia-plotter:
+
 sign
 ```sh
 docker run -itd --rm --name plot00 --cpuset-cpus="0-4" -v "/mnt/tmp/00:/mnt/tmp" -v "/mnt/dst/00:/mnt/plot" -v "/opt/chialogs:/mnt/logs" kayuii/chia-plotter:v0.11 chia-plotter-linux-amd64 -action sign -sign-mnemonic "24 mnemonics"
