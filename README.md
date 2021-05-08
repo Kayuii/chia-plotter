@@ -51,7 +51,7 @@ command-line example for chia-plotter:
 
 sign
 ```sh
-docker run -itd --rm --name plot00 --cpuset-cpus="0-4" \
+docker run -it --rm \
   kayuii/chia-plotter:v0.11 chia-plotter-linux-amd64 \
   -action sign -sign-mnemonic "24 mnemonics"
 ```
