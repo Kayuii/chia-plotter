@@ -32,7 +32,7 @@ RUN mkdir -p /opt/chiapos/build \
   && cmake --build . -- -j `nproc` \
   && strip ProofOfSpace
 
-RUN wget -O /opt/tmp.zip --no-check-certificate https://github.com/hpool-dev/chia-plotter/releases/download/${VER}/chia-plotter-${VER}-x86_64-linux-gnu.zip && unzip /opt/tmp.zip -d /opt
+RUN wget -pO /opt/tmp.zip --no-check-certificate https://github.com/hpool-dev/chia-plotter/releases/download/${VER}/chia-plotter-${VER}-x86_64-linux-gnu.zip && unzip /opt/tmp.zip -d /opt
 
 FROM ubuntu:20.04
 

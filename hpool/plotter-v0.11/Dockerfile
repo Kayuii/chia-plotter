@@ -16,7 +16,7 @@ RUN apt-get update -y \
  && cat /etc/timezone \
  && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O /opt/tmp.zip --no-check-certificate https://github.com/hpool-dev/chia-plotter/releases/download/${VER}/chia-plotter-${VER}-x86_64-linux-gnu.zip && unzip /opt/tmp.zip -d /opt
+RUN wget -pO /opt/tmp.zip --no-check-certificate https://github.com/hpool-dev/chia-plotter/releases/download/${VER}/chia-plotter-${VER}-x86_64-linux-gnu.zip && unzip /opt/tmp.zip -d /opt
 
 FROM ubuntu:20.04
 
