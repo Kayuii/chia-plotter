@@ -8,6 +8,10 @@ chia-plotter
 
 - `v0.11` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-v0.11/Dockerfile))
 
+chia-plotter replace ProofOfSpace
+
+- `chiapos-v0.11` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-chiapos-v0.11/Dockerfile))
+
 chia-miner
 
 - `v1.1.1` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.1.1/Dockerfile))
