@@ -1,7 +1,10 @@
 *.sh
 *.yaml
-*.yml
+# *.yml
 logs/
 chialogs/
 *.fio
 *.pos
+*.bak
+
+!arch.sh

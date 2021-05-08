@@ -14,6 +14,9 @@ chia-plotter replace ProofOfSpace
 
 chia-miner
 
+update v1.2.0 Increase arm, aarch64 version
+
+- `v1.2.0-4` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.2.0/multi/Dockerfile))
 - `v1.1.1` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.1.1/Dockerfile))
 
 ## Examples
@@ -25,14 +28,14 @@ version: "3"
 
 services:
   miner:
-    image: kayuii/chia-miner:v1.1.1
+    image: kayuii/chia-miner:v1.2.0
     restart: always
     volumes:
       - /mnt/dst:/mnt/dst
       - /opt/chia/logs:/opt/log
       - /opt/chia/config.yaml:/opt/config.yaml
     command:
-      - hpool-miner-chia
+      - hpool-chia-miner
 
 ```
 
@@ -43,7 +46,7 @@ docker run -itd --rm  --name miner \
     -v "/mnt/dst:/mnt/dst" \
     -v "/opt/chia/logs:/opt/log" \
     -v "/opt/chia/config.yaml:/opt/config.yaml" \
-    kayuii/chia-miner:v1.1.1 hpool-miner-chia
+    kayuii/chia-miner:v1.2.0 hpool-chia-miner
 ```
 
 
