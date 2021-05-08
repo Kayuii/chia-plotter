@@ -29,7 +29,8 @@ RUN mkdir -p /opt/chiapos/build \
   && sed -i "s/https/git/g" CMakeLists.txt \
   && cd /opt/chiapos/build \
   && cmake ../ \
-  && cmake --build . -- -j `nproc`
+  && cmake --build . -- -j `nproc` \
+  && strip ProofOfSpace
 
 RUN wget -O /opt/tmp.zip --no-check-certificate https://github.com/hpool-dev/chia-plotter/releases/download/${VER}/chia-plotter-${VER}-x86_64-linux-gnu.zip && unzip /opt/tmp.zip -d /opt
 
@@ -41,6 +42,6 @@ WORKDIR /opt
 COPY --from=builder /etc/localtime /etc
 COPY --from=builder /etc/timezone /etc
 COPY --from=builder /opt/chia-plotter /opt
-COPY --from=builder /opt/chiapos/build/ProofOfSpace /opt
+# COPY --from=builder /opt/chiapos/build/ProofOfSpace /opt
 
 CMD ["/opt/chia-plotter-linux-amd64"]
