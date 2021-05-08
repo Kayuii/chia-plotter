@@ -10,7 +10,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y \
  && apt-get install -y --no-install-recommends \
-    wget unzip \
+    wget unzip tzdata \
  && cp /usr/share/zoneinfo/$TZ /etc/localtime \
  && echo $TZ > /etc/timezone \
  && cat /etc/timezone \
