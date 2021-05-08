@@ -1,0 +1,7 @@
+*.sh
+*.yaml
+*.yml
+logs/
+chialogs/
+*.fio
+*.pos
