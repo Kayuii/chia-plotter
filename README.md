@@ -14,6 +14,9 @@ chia-plotter replace ProofOfSpace
 
 chia-miner
 
+update v1.2.0 Increase arm, aarch64 version
+
+- `v1.2.0-4` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.2.0/multi/Dockerfile))
 - `v1.1.1` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.1.1/Dockerfile))
 
 ## Examples

@@ -1,0 +1,41 @@
+language: ruby
+
+services:
+  - docker
+
+os:
+  - linux
+addons:
+  apt:
+    packages:
+      - docker-ce
+
+before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - export DOCKER_BUILDKIT=1
+  - docker run --rm --privileged tonistiigi/binfmt:latest --install all
+  - docker buildx create --use --name=multipleplatforms --driver docker-container
+  - docker buildx inspect --bootstrap
+
+script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker buildx build --push --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6 -f Dockerfile -t kayuii/gcc:base . 
+  - docker buildx build --push --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6 -f ./gnu/Dockerfile -t kayuii/gcc:latest . 
+  - docker pull --platform "linux/amd64" kayuii/gcc:latest
+  - docker tag kayuii/gcc:latest kayuii/gcc:amd64
+  - docker push kayuii/gcc:amd64
+  - docker pull --platform "linux/386" kayuii/gcc:latest
+  - docker tag kayuii/gcc:latest kayuii/gcc:i386
+  - docker push kayuii/gcc:i386
+  - docker pull --platform "linux/arm64" kayuii/gcc:latest
+  - docker tag kayuii/gcc:latest kayuii/gcc:aarch64
+  - docker push kayuii/gcc:aarch64
+  - docker pull --platform "linux/arm/v7" kayuii/gcc:latest
+  - docker tag kayuii/gcc:latest kayuii/gcc:armhf
+  - docker push kayuii/gcc:armhf
+  - docker pull --platform "linux/arm/v6" kayuii/gcc:latest
+  - docker tag kayuii/gcc:latest kayuii/gcc:armel
+  - docker push kayuii/gcc:armel 

@@ -1,0 +1,36 @@
+name: for miner
+env:
+  DOCKER_REG: kayuii/chia-plotter
+on:
+  push:
+    tags:
+    - 'hpool-miner-v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # 设置qemu来编译多个平台的镜像
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+    # 设置buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    # 登陆dockerhub
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      id: docker_build
+      with:
+        context: ./hpool/miner-v1.2.0/multi/
+        file: ./hpool/miner-v1.2.0/multi/Dockerfile
+        push: true
+        tags: |
+          ${{ env.DOCKER_REG }}:${{ env.VERSION }}
+    -
+      name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
