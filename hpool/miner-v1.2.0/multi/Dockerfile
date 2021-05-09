@@ -8,7 +8,7 @@ ENV TZ=Asia/Shanghai
 
 COPY arch.sh /tmp/arch.sh
 
-RUN apk --no-cache add tzdata \
+RUN apk --no-cache add bash curl tzdata \
  && mkdir -p /tmp/linux \
  && /tmp/arch.sh ${VER} \
  && mv /tmp/linux/* /opt/ \
