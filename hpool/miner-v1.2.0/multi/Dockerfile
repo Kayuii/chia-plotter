@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM ubuntu:20.04 as builder
 
 ARG VER=v1.2.0-4
 ARG TARGETARCH
@@ -8,17 +8,19 @@ ENV TZ=Asia/Shanghai
 
 COPY arch.sh /tmp/arch.sh
 
-RUN apk --no-cache add bash ca-certificates curl tzdata \
- && mkdir -p /tmp/linux \
- && /tmp/arch.sh ${VER} \
- && mv /tmp/linux/* /opt/ \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y \
+ && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  git wget unzip tzdata \
  && cp /usr/share/zoneinfo/$TZ /etc/localtime \
  && echo $TZ > /etc/timezone \
  && cat /etc/timezone \
- && rm -rf /tmp/* \
- && apk del tzdata
-
-WORKDIR /opt
+ && mkdir -p /tmp/linux \
+ && /tmp/arch.sh ${VER} \
+ && mv /tmp/linux/* /opt/ \
+ && rm -rf /var/lib/apt/lists/*
 
 FROM ubuntu:20.04
 
