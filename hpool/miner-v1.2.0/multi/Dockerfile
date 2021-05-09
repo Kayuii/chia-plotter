@@ -8,7 +8,7 @@ ENV TZ=Asia/Shanghai
 
 COPY arch.sh /tmp/arch.sh
 
-RUN apk --no-cache add bash curl tzdata \
+RUN apk --no-cache add bash ca-certificates curl tzdata \
  && mkdir -p /tmp/linux \
  && /tmp/arch.sh ${VER} \
  && mv /tmp/linux/* /opt/ \
@@ -30,4 +30,4 @@ COPY --from=builder /etc/timezone /etc
 COPY --from=builder /opt/ /opt/
 
 RUN apt-get -qq update \
-    && apt-get -qq install -y --no-install-recommends ca-certificates curl
+    && apt-get -qq install -y --no-install-recommends curl
