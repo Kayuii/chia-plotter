@@ -2,6 +2,8 @@ name: for miner
 
 on:
   push:
+    branches:
+      - master
     tags:
     - 'hpool-miner-v*'
 
