@@ -8,3 +8,4 @@ chialogs/
 *.bak
 
 !arch.sh
+!entrypoint.sh
