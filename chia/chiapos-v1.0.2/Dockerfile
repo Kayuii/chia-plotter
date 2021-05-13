@@ -1,6 +1,5 @@
 FROM ubuntu:20.04 as builder
 
-ARG VER=v0.11
 ARG CHIAPOS=1.0.2
 ENV CHIAPATH=chiapos-${CHIAPOS}
 ENV PATH=$PATH:/opt
@@ -32,8 +31,6 @@ RUN mkdir -p /opt/chiapos/build \
   && cmake --build . -- -j `nproc` \
   && strip ProofOfSpace
 
-RUN wget -qO /opt/tmp.zip --no-check-certificate https://github.com/hpool-dev/chia-plotter/releases/download/${VER}/chia-plotter-${VER}-x86_64-linux-gnu.zip && unzip /opt/tmp.zip -d /opt
-
 FROM ubuntu:20.04
 
 ENV PATH=$PATH:/opt
@@ -41,7 +38,6 @@ WORKDIR /opt
 
 COPY --from=builder /etc/localtime /etc
 COPY --from=builder /etc/timezone /etc
-COPY --from=builder /opt/chia-plotter /opt
 COPY --from=builder /opt/chiapos/build/ProofOfSpace /opt
 
-CMD ["/opt/chia-plotter-linux-amd64"]
+CMD ["ProofOfSpace"]

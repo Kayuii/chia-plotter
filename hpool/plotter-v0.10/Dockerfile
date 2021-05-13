@@ -1,6 +1,6 @@
 FROM ubuntu:20.04 as builder
 
-ARG VER=v0.11
+ARG VER=v0.10
 ENV PATH=$PATH:/opt
 ENV TZ=Asia/Shanghai
 

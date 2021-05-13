@@ -6,36 +6,34 @@ An [chia-plotter](https://github.com/hpool-dev/chia-plotter) docker image.
 
 chia-plotter
 
+- `v0.10` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-v0.11/Dockerfile))
 - `v0.11` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-v0.11/Dockerfile))
 
 chia-plotter replace ProofOfSpace
 
+
+- `chiapos-v0.10` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-chiapos-v0.10/Dockerfile))
 - `chiapos-v0.11` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-chiapos-v0.11/Dockerfile))
 
-chia-miner
+hpool-miner
 
-update v1.2.0 Increase arm, aarch64 version
+move to ([kayuii/hoop-miner](https://github.com/Kayuii/hoop-miner))
 
-- `v1.2.0-4` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.2.0/multi/Dockerfile))
-- `v1.1.1` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/miner-v1.1.1/Dockerfile))
-
-## Examples
-
-`docker-compose` example for chia-miner:
+`docker-compose` example for hpool-miner:
 
 ```yml
 version: "3"
 
 services:
   miner:
-    image: kayuii/chia-miner:v1.1.1
+    image: kayuii/hpool-miner:v1.2.0-5
     restart: always
     volumes:
       - /mnt/dst:/mnt/dst
       - /opt/chia/logs:/opt/log
       - /opt/chia/config.yaml:/opt/config.yaml
     command:
-      - hpool-miner-chia
+      - hpool-chia-miner
 
 ```
 
@@ -46,7 +44,7 @@ docker run -itd --rm  --name miner \
     -v "/mnt/dst:/mnt/dst" \
     -v "/opt/chia/logs:/opt/log" \
     -v "/opt/chia/config.yaml:/opt/config.yaml" \
-    kayuii/chia-miner:v1.1.1 hpool-miner-chia
+    kayuii/hpool-miner:v1.2.0-5 hpool-chia-miner
 ```
 
 

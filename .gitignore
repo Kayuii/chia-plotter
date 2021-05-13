@@ -5,5 +5,7 @@ logs/
 chialogs/
 *.fio
 *.pos
+*.bak
 
 !arch.sh
+!entrypoint.sh
