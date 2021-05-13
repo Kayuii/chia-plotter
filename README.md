@@ -6,10 +6,13 @@ An [chia-plotter](https://github.com/hpool-dev/chia-plotter) docker image.
 
 chia-plotter
 
+- `v0.10` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-v0.11/Dockerfile))
 - `v0.11` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-v0.11/Dockerfile))
 
 chia-plotter replace ProofOfSpace
 
+
+- `chiapos-v0.10` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-chiapos-v0.10/Dockerfile))
 - `chiapos-v0.11` ([Dockerfile](https://github.com/Kayuii/chia-plotter/blob/master/hpool/plotter-chiapos-v0.11/Dockerfile))
 
 hpool-miner
