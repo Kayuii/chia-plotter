@@ -29,3 +29,4 @@ script:
   - cd hpool/miner-v1.2.0/multi/
   - docker buildx build --push --platform linux/amd64,linux/arm -f Dockerfile -t kayuii/chia-miner:v1.2.0 .
   
+  
