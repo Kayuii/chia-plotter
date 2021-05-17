@@ -1,0 +1,32 @@
+language: ruby
+
+services:
+  - docker
+
+os:
+  - linux
+addons:
+  apt:
+    packages:
+      - docker-ce
+
+before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - export DOCKER_BUILDKIT=1
+  # - docker run --rm --privileged tonistiigi/binfmt:latest --install all
+  # - docker buildx create --use --name=multipleplatforms --driver docker-container
+  - docker buildx version
+  - docker buildx create --platform linux/amd64,linux/arm64,linux/arm --use
+  - docker buildx ls
+  - docker buildx inspect --bootstrap
+
+script:
+  #  - docker login docker.io -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - cd hpool/miner-v1.2.0/multi/
+  - docker buildx build --push --platform linux/amd64,linux/arm -f Dockerfile -t kayuii/chia-miner:v1.2.0 .
+  
+  

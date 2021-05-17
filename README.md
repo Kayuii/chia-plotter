@@ -17,7 +17,7 @@ chia-plotter replace ProofOfSpace
 
 hpool-miner
 
-move to ([kayuii/hoop-miner](https://github.com/Kayuii/hoop-miner))
+move to ([kayuii/hpool-miner](https://github.com/Kayuii/hpool-miner))
 
 `docker-compose` example for hpool-miner:
 

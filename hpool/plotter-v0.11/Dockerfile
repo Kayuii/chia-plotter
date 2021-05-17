@@ -1,8 +1,6 @@
 FROM ubuntu:20.04 as builder
 
 ARG VER=v0.11
-ARG CHIAPOS=1.0.1
-ENV CHIAPATH=chiapos-${CHIAPOS}
 ENV PATH=$PATH:/opt
 ENV TZ=Asia/Shanghai
 
