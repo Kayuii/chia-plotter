@@ -24,6 +24,7 @@ RUN git clone --branch ${BRANCH} git://github.com/Chia-Network/chia-blockchain.g
 
 WORKDIR /chia-blockchain
 RUN mkdir /plots
-ADD chia/chia-v1.1.5/entrypoint.sh entrypoint.sh
+# ADD chia/chia-v1.1.5/entrypoint.sh entrypoint.sh
+ADD entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
