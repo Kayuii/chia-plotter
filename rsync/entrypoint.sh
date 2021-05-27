@@ -20,14 +20,16 @@ rsync_run(){
   plotfile=$(find /mnt/dst -type f -name "*.plot" |sort -n|head -1)
   if [ -z $plotfile ]; then
   echo "nofile, sleep 10m;"
-  sleep 10m
+  sleep 10m;
   else
   tmpfile=$(dirname $plotfile)
   echo "$plotfile"
-  rsync --bwlimit=150000 $plotfile ${host}:${path}
+  rsync --bwlimit=200000 $plotfile ${host}:${path}
   ret=$?
+  sleep 10;
   if [ $ret -ne 0 ]; then
-    echo "rsync:failed: $ret"
+    echo "rsync:failed: $ret; sleep 5m"
+    sleep 5m;
   else
     mkdir -p ${tmpfile}/empty ${tmpfile}/rmfile
     mv $plotfile ${tmpfile}/rmfile

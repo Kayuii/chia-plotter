@@ -26,7 +26,7 @@ RUN git clone -b $CHIAPOS git://github.com/Chia-Network/chiapos.git /opt/chiapos
 RUN mkdir -p /opt/chiapos/build \
   && cd /opt/chiapos \
   && sed -i "s/https/git/g" CMakeLists.txt \
-  && sed -i "s/target_link_libraries(ProofOfSpace fse stdc++fs Threads::Threads)/target_link_libraries(ProofOfSpace fse stdc++fs -static Threads::Threads)/g" CMakeLists.txt \
+  && sed -i "s/target_link_libraries(ProofOfSpace fse stdc++fs Threads::Threads)/target_link_libraries(ProofOfSpace fse stdc++fs -static Threads::Threads )/g" CMakeLists.txt \
   && cd /opt/chiapos/build \
   && cmake ../ \
   && cmake --build . -- -j `nproc` \
