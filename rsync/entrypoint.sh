@@ -17,14 +17,14 @@ rsync_run(){
   [ "$#" -eq 2 ] || fatal "rsync faild: hostname and path."
   local host="$1"
   local path="$2"
-  plotfile=$(find /mnt/dst -type f -name "*.plot" |sort -n|head -1)
+  plotfile=$(find /mnt/dst -not -empty -type f -name "*.plot" |sort -n|head -1)
   if [ -z $plotfile ]; then
   echo "nofile, sleep 10m;"
   sleep 10m;
   else
   tmpfile=$(dirname $plotfile)
   echo "$plotfile"
-  rsync --bwlimit=200000 $plotfile ${host}:${path}
+  rsync --bwlimit=300000 --whole-file $plotfile ${host}:${path}
   ret=$?
   sleep 10;
   if [ $ret -ne 0 ]; then

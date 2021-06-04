@@ -14,13 +14,14 @@ RUN wget -qO - --no-check-certificate https://github.com/Kayuii/chiacli/archive/
   && cd /opt \
   && make build-static
 
-FROM python:3.7-slim
+FROM kayuii/chia-plotter:hplotter-v0.11 as hpool
 
-RUN pip install --extra-index-url https://hosted.chia.net/simple/ chia-blockchain==1.1.6 miniupnpc==2.1
-
-RUN chia init && mkdir -p /mnt/plot && chia plots add -d /mnt/plot
-
-COPY --from=builder /opt/chiacli-static /usr/local/bin/chiacli
+FROM ubuntu:20.04
 
 ENV PATH=$PATH:/opt
 WORKDIR /opt
+
+COPY --from=hpool /etc/localtime /etc
+COPY --from=hpool /etc/timezone /etc
+COPY --from=hpool /opt/ /opt/
+COPY --from=builder /opt/chiacli /opt
