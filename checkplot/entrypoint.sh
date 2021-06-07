@@ -56,7 +56,7 @@ check_run(){
         errno=$((errno+1))
       fi
     else
-      echo "Invalid plot header magic ;"
+      echo "Invalid plot header magic;"
       # mkdir -p ${tmpfile}/z
       # mv $plotfile ${tmpfile}/z
       errfile=$errfile"\n"$plotfile
