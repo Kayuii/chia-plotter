@@ -17,6 +17,7 @@ rsync_run(){
   [ "$#" -eq 2 ] || fatal "rsync faild: hostname and path."
   local host="$1"
   local path="$2"
+  # find -not -empty -type f -name "*.plot" -ls |sort -rk7|awk '{printf $11"\n"}'|head -1
   plotfile=$(find /mnt/dst -not -empty -type f -name "*.plot" |sort -n|head -1)
   if [ -z $plotfile ]; then
     echo "nofile, sleep 10m;"
@@ -51,7 +52,7 @@ rsync_run(){
             echo "sk : $(hexdump -s $((0x$fmt_desc_len + 56+32+48)) -n 32 -e '1/1 "%02X"' $plotfile)"
         fi
 
-        rsync --bwlimit=150000 --whole-file $plotfile ${host}:${path}
+        rsync --bwlimit=200000 --whole-file $plotfile ${host}:${path}
         ret=$?
         sleep 10;
         if [ $ret -ne 0 ]; then
