@@ -1,6 +1,6 @@
 #!/bin/sh
 
-APPNAME=rsync
+APPNAME=check
 usage() {
   if [ $# -eq 0 ]; then
     echo ""
@@ -8,21 +8,20 @@ usage() {
     echo ""
     echo "Usage:"
     echo ""
-    printf "%s\n" "  ${APPNAME} <user:host> [path]"
+    printf "%s\n" "  ${APPNAME} [path]"
     exit 1
   fi
 }
 
-rsync_run(){
-  [ "$#" -eq 2 ] || fatal "rsync faild: hostname and path."
-  local host="$1"
-  local path="$2"
-  # find -not -empty -type f -name "*.plot" -ls |sort -rk7|awk '{printf $11"\n"}'|head -1
-  plotfile=$(find /mnt/dst -not -empty -type f -name "*.plot" |sort -n|head -1)
-  if [ -z $plotfile ]; then
-    echo "nofile, sleep 10m;"
-    sleep 10m;
-  else
+check_run(){
+  [ "$#" -eq 1 ] || fatal "check faild: path."
+  local path="$1"
+
+  plotfilelist=$(find $path -not -empty -type f -name "*.plot" |sort -n)
+
+  errfile=""
+  errno=0
+  for plotfile in $plotfilelist; do
     tmpfile=$(dirname $plotfile)
     echo "$plotfile"
     echo "check header magic"
@@ -51,48 +50,40 @@ rsync_run(){
             echo "fpk: $(hexdump -s $((0x$fmt_desc_len + 56+32)) -n 48 -e '1/1 "%02X"' $plotfile)"
             echo "sk : $(hexdump -s $((0x$fmt_desc_len + 56+32+48)) -n 32 -e '1/1 "%02X"' $plotfile)"
         fi
-
-        rsync --bwlimit=200000 --whole-file $plotfile ${host}:${path}
-        ret=$?
-        sleep 10;
-        if [ $ret -ne 0 ]; then
-          echo "rsync:failed: $ret; sleep 5m"
-          sleep 5m;
-        else
-          mkdir -p ${tmpfile}/empty ${tmpfile}/rmfile
-          mv $plotfile ${tmpfile}/rmfile
-          rsync --delete-before -a -H --stats ${tmpfile}/empty/ ${tmpfile}/rmfile/
-        fi
       else
         echo "Invalid plot file format"
+        errfile=$errfile"\n"$plotfile
+        errno=$((errno+1))
       fi
     else
-    echo "Invalid plot header magic, move file to ./z ; and sleep 10 ;"
-    mkdir -p ${tmpfile}/z
-    mv $plotfile ${tmpfile}/z
-    sleep 10
+      echo "Invalid plot header magic;"
+      # mkdir -p ${tmpfile}/z
+      # mv $plotfile ${tmpfile}/z
+      errfile=$errfile"\n"$plotfile
+      errno=$((errno+1))
     fi
-  fi
+  done
+
+  echo "$errfile"
+  echo "tatol err file: $errno"
+
 }
-do_rsync() {
-  [ "$#" -eq 2 ] || fatal "faild: hostname and path."
-  local host="$1"
-  local path="$2"
-  rsync_run "${host}" "${path}"
+do_check() {
+  [ "$#" -eq 1 ] || fatal "faild: path."
+  local path="$1"
+  check_run "${path}"
 }
 
-
-[ "$#" -ge 3 ] || {
+[ "$#" -ge 2 ] || {
   usage
   exit 1
 }
-
 subcommand="$1"
 shift
 
 case "$subcommand" in
-rsync)
-  do_rsync "$@"
+check)
+  do_check "$@"
   ;;
 *)
   fatal "Unknown subcommand $subcommand"
