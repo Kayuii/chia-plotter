@@ -1,0 +1,79 @@
+version: 2.1
+
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "build Dockerfile"
+          command:
+            make master;
+      - run:
+          name: "Text docker images"
+          command:
+            make test;
+      - run:
+          name: "Push docker images"
+          command: |
+            echo "$DOCKER_PWD" | docker login --username kayuii --password-stdin
+            make push;
+
+  build-chiapos:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "build Dockerfile"
+          command:
+            make chiapos;
+      - run:
+          name: "test docker images"
+          command:
+            make test;
+      - run:
+          name: "Push docker images"
+          command: |
+            echo "$DOCKER_PWD" | docker login --username kayuii --password-stdin
+            make push;
+
+  build-chia:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "build Dockerfile"
+          command:
+            make chia;
+      - run:
+          name: "test docker images"
+          command:
+            make test;
+      - run:
+          name: "Push docker images"
+          command: |
+            echo "$DOCKER_PWD" | docker login --username kayuii --password-stdin
+            make push;
+
+workflows:
+  myflow:
+    jobs:
+      - build:
+          context: docker
+          filters:
+            branches:
+              only: master
+      - build-chiapos:
+          context: docker
+          filters:
+            tags:
+              only: /^chiapos-v.*/
+            branches:
+              ignore: /.*/
+      - build-chia:
+          context: docker
+          filters:
+            tags:
+              only: /^chia-v.*/
+            branches:
+              ignore: /.*/

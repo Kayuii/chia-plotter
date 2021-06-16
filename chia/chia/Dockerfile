@@ -1,6 +1,6 @@
 FROM golang:alpine as builder
 
-ENV VER=v0.1
+ARG CHIACLI_VER=v0.4
 
 RUN apk update \
   && apk --no-cache add --virtual build-dependencies \
@@ -10,13 +10,15 @@ ENV GOPROXY=https://goproxy.io,direct
 
 WORKDIR /opt
 
-RUN wget -qO - --no-check-certificate https://github.com/Kayuii/chiacli/archive/refs/tags/${VER}.tar.gz | tar xz --strip-components=1 -C /opt \
+RUN wget -qO - --no-check-certificate https://github.com/Kayuii/chiacli/archive/refs/tags/${CHIACLI_VER}.tar.gz | tar xz --strip-components=1 -C /opt \
   && cd /opt \
   && make build-static
 
 FROM python:3.7-slim
 
-RUN pip install --extra-index-url https://hosted.chia.net/simple/ chia-blockchain==1.1.6 miniupnpc==2.1
+ARG CHIA_VER=v1.1.7
+
+RUN pip install --extra-index-url https://hosted.chia.net/simple/ chia-blockchain==${CHIA_VER} miniupnpc==2.1
 
 RUN chia init && mkdir -p /mnt/plot && chia plots add -d /mnt/plot
 
