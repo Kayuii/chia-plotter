@@ -57,6 +57,10 @@ chiapos: echo
 	cd "chia/chiapos/"; \
 	docker build --build-arg CHIAPOS=$(VERSION) -f Dockerfile -t ${TARGET_IMAGE} . ;
 
+fastpos: echo
+	cd "chia/fastpos/"; \
+	docker build --build-arg -f Dockerfile -t ${TARGET_IMAGE} . ;
+
 chia: echo
 	cd "chia/chia/"; \
 	docker build --build-arg CHIA_VER=$(VERSION) -f Dockerfile -t ${TARGET_IMAGE} . ;

@@ -51,6 +51,20 @@ jobs:
             echo "$DOCKER_PWD" | docker login --username kayuii --password-stdin
             make push;
 
+  build-fastpos:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "build Dockerfile"
+          command:
+            make fastpos;
+      - run:
+          name: "Push docker images"
+          command: |
+            echo "$DOCKER_PWD" | docker login --username kayuii --password-stdin
+            make push;
+
 workflows:
   myflow:
     jobs:
@@ -71,5 +85,12 @@ workflows:
           filters:
             tags:
               only: /^chia-v.*/
+            branches:
+              ignore: /.*/
+      - build-fastpos:
+          context: docker
+          filters:
+            tags:
+              only: /^fastpos-v.*/
             branches:
               ignore: /.*/
