@@ -46,10 +46,6 @@ jobs:
           command:
             make chia;
       - run:
-          name: "test docker images"
-          command:
-            make test;
-      - run:
           name: "Push docker images"
           command: |
             echo "$DOCKER_PWD" | docker login --username kayuii --password-stdin
