@@ -4,12 +4,18 @@ IMAGE_TAG:=chia-plotter
 
 TARGET_IMAGE_PRD=$(IMAGE_PREFIX)/$(IMAGE_TAG)
 
-TAG := $(shell git describe --tags --abbrev=0 --match 'chiapos-v*')
-VERSION := $(shell echo $(TAG) | sed 's/^chiapos-v//')
+ifeq (strip($(CIRCLE_TAG)), )
+TAG_PREFIX:="chiapos-v"
+else
+TAG_PREFIX:=$(shell echo $(CIRCLE_TAG) | sed 's/-v[0-9.]*/-v/')
+endif
+
+TAG := $(shell git describe --tags --abbrev=0 --match '${TAG_PREFIX}*')
+VERSION := $(shell echo $(TAG) | sed 's/^${TAG_PREFIX}//')
 COMMIT := $(shell git rev-parse HEAD)
 SHORTCOMMIT := $(shell echo $(COMMIT) | cut -c1-7)
-RELEASE := $(shell git describe --tags --match 'chiapos-v*' \
-             | sed 's/^chiapos-v//' \
+RELEASE := $(shell git describe --tags --match '${TAG_PREFIX}*' \
+             | sed 's/^${TAG_PREFIX}//' \
              | sed 's/^[^-]*-//' \
              | sed 's/-/./')
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
@@ -19,16 +25,18 @@ else
 	TARGET_IMAGE = $(shell echo "${TARGET_IMAGE_PRD}:${TAG}")
 endif
 
-all: chiapos chia
+all: chiapos chia fastpos
 
 echo:
 	@echo ""
 	@echo "Make echo"
 	@echo TAG $(TAG)
 	@echo COMMIT $(COMMIT)
+	@echo TAG_PREFIX $(TAG_PREFIX)
 	@echo VERSION $(VERSION)
 	@echo SHORTCOMMIT $(SHORTCOMMIT)
 	@echo RELEASE $(RELEASE)
+	@echo TARGET_IMAGE $(TARGET_IMAGE)
 
 tag:
 	$(eval BRANCH := $(shell git rev-parse --abbrev-ref HEAD))
@@ -72,4 +80,4 @@ push:
 	docker push ${TARGET_IMAGE} ;
 
 
-.PHONY: chiapos chia tag master
+.PHONY: chiapos chia tag master fastpos
