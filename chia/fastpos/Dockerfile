@@ -16,7 +16,7 @@ RUN apk --no-cache add \
 
 ENV CIBUILDWHEEL 1
 
-RUN git clone https://github.com/madMAx43v3r/chia-plotter.git /opt/fastpos --depth 1 \
+RUN git clone https://github.com/Kayuii/fastpos.git /opt/fastpos --depth 1 \
   && cd fastpos \
   && git submodule update --init \
   && mkdir -p build \
