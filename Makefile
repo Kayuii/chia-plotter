@@ -4,7 +4,7 @@ IMAGE_TAG:=chia-plotter
 
 TARGET_IMAGE_PRD=$(IMAGE_PREFIX)/$(IMAGE_TAG)
 
-ifeq (strip($(CIRCLE_TAG)), )
+ifndef CIRCLE_TAG
 TAG_PREFIX:="chiapos-v"
 else
 TAG_PREFIX:=$(shell echo $(CIRCLE_TAG) | sed 's/-v[0-9.]*/-v/')
