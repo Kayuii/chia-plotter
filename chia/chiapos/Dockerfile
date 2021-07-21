@@ -39,6 +39,7 @@ WORKDIR /opt
 
 COPY --from=builder /etc/localtime /etc
 COPY --from=builder /etc/timezone /etc
+COPY --from=builder /opt/chiapos/build/ /opt/build
 COPY --from=builder /opt/chiapos/build/ProofOfSpace /opt
 
 CMD ["ProofOfSpace"]
