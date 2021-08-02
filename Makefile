@@ -67,7 +67,7 @@ chiapos: echo
 
 fastpos: echo
 	cd "chia/fastpos/"; \
-	docker build -f Dockerfile -t ${TARGET_IMAGE} . ;
+	docker build -f Dockerfile.ubuntu -t ${TARGET_IMAGE} . ;
 
 chia: echo
 	cd "chia/chia/"; \
