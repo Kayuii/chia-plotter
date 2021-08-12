@@ -51,17 +51,23 @@ rsync_run(){
             echo "fpk: $(hexdump -s $((0x$fmt_desc_len + 56+32)) -n 48 -e '1/1 "%02X"' $plotfile)"
             echo "sk : $(hexdump -s $((0x$fmt_desc_len + 56+32+48)) -n 32 -e '1/1 "%02X"' $plotfile)"
         fi
-
-        rsync --bwlimit=200000 --whole-file $plotfile ${host}:${path}
-        ret=$?
-        sleep 10;
-        if [ $ret -ne 0 ]; then
-          echo "rsync:failed: $ret; sleep 5m"
-          sleep 5m;
+        diskinfo=$(ssh ${host} "df " | grep -i "${path}" | awk '{if($0~/^\//)printf "%s\t%.1fT\t%.1fG\t%s\t%s\t%d\n", $1,$2/1024.0/1024.0/1024.0,$4/1024.0/1024.0,$5,$6, $4/1024.0/1024.0/101.3;}')
+        echo $diskinfo
+        check=$(echo $diskinfo | awk '{print $6}')
+        if [ $check -gt 0 ];then
+          rsync --bwlimit=200000 --whole-file $plotfile ${host}:${path}
+          ret=$?
+          sleep 10;
+          if [ $ret -ne 0 ]; then
+            echo "rsync:failed: $ret; sleep 5m"
+            sleep 5m;
+          else
+            mkdir -p ${tmpfile}/empty ${tmpfile}/rmfile
+            mv $plotfile ${tmpfile}/rmfile
+            rsync --delete-before -a -H --stats ${tmpfile}/empty/ ${tmpfile}/rmfile/
+          fi
         else
-          mkdir -p ${tmpfile}/empty ${tmpfile}/rmfile
-          mv $plotfile ${tmpfile}/rmfile
-          rsync --delete-before -a -H --stats ${tmpfile}/empty/ ${tmpfile}/rmfile/
+          echo "disk ${path} is full"
         fi
       else
         echo "Invalid plot file format"
